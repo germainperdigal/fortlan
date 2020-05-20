@@ -1,0 +1,60 @@
+<div class="main-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header card-header-danger">
+                        <h4 class="card-title ">Liste de vos {{ users.length }} utilisateurs</h4>
+                        <p class="card-category"> L'ensemble des utilisateurs inscrits sur FifaBet</p>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <input type="search" name="research" [(ngModel)]="searchText" placeholder='Rechercher un joueur (email, pseudo...)' class="form-control">
+                            <table class="table">
+                                <thead class=" text-primary">
+                                    <th>
+                                        ID
+                                    </th>
+                                    <th>
+                                        Nom
+                                    </th>
+                                    <th>
+                                        E-mail
+                                    </th>
+                                    <th>
+                                        Pseudo
+                                    </th>
+                                    <th>
+                                        Actions
+                                    </th>
+                                </thead>
+                                <tbody *ngIf="users">
+                                    <tr *ngFor="let user of (users | filter : searchText) | paginate: { itemsPerPage: 10, currentPage: p }">
+                                        <td *ngIf="user" class="text-xs" style="width: 4vw;">
+                                            {{ user._id }}
+                                        </td>
+                                        <td *ngIf="users">
+                                            {{ user.fname }} {{ user.lname | uppercase }} <span class="badge badge-secondary" *ngIf="user.promo">{{ user.promo.label }}</span>
+
+                                        </td>
+                                        <td *ngIf="users">
+                                            {{ user.email }}
+                                        </td>
+                                        <td *ngIf="users">
+                                            {{ user.pseudo }}
+                                        </td>
+                                        <td class="text-primary">
+                                            <button *ngIf="users" mat-raised-button routerLink="/utilisateur/{{ user._id }}" class="btn btn-success btn-sm">Détails</button>
+                                        </td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
+                            <pagination-controls previousLabel="Précédent" nextLabel="Suivant" (pageChange)="p = $event"></pagination-controls>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

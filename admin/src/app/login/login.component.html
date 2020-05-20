@@ -1,0 +1,29 @@
+<div class="main-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-6 mx-auto">
+                <div class="card">
+                    <div class="card-header row card-header-danger">
+                        <div class="col-12">
+                            <h4 class="card-title ">Connexion à l'espace administrateur</h4>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <form>
+                            <div class="row">
+                                <div class="col-md-12 px-5">
+                                    <input [(ngModel)]="pseudo" class="block form-control mt-2" name="pseudo" matInput placeholder="Pseudo..." type="text">
+                                    <input [(ngModel)]="password" class="form-control mt-4 mb-4" name="password" matInput placeholder="Mot de passe..." type="password">
+                                </div>
+                            </div>
+
+                            <button mat-raised-button type="submit" (click)="login()" class="btn block mt-4 float-right btn-danger pull-right">Connexion</button>
+                            <div class="clearfix"></div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

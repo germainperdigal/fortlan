@@ -1,0 +1,50 @@
+<div class="main-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header row card-header-danger">
+                        <div class="col-12">
+                            <h4 class="card-title ">Créer une partie</h4>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <form>
+                            <div class="row">
+                                <div class="col-md-12 px-5">
+                                    <mat-form-field class="example-full-width">
+                                        <mat-label>Libellé</mat-label>
+                                        <input [(ngModel)]="label" name="label" matInput placeholder="Libellé...">
+                                    </mat-form-field>
+                                    <mat-form-field class="example-full-width">
+                                        <mat-label>Cash prize</mat-label>
+                                        <input type="number" [(ngModel)]="cashprize" name="cashprize" matInput placeholder="Cash prize (en €)...">
+                                    </mat-form-field>
+                                    <mat-form-field>
+                                        <mat-label>Date</mat-label>
+                                        <input [(ngModel)]="date" name="date" matInput [matDatepicker]="picker">
+                                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                        <mat-datepicker #picker></mat-datepicker>
+                                    </mat-form-field>
+                                    <div class="row">
+                                        <mat-form-field class="col-6">
+                                            <mat-label>Heure</mat-label>
+                                            <input [(ngModel)]="hour" name="hour" type="number" matInput placeholder="Heure...">
+                                        </mat-form-field>
+                                        <mat-form-field class="col-6">
+                                            <mat-label>Minute</mat-label>
+                                            <input [(ngModel)]="minute" name="minute" type="number" matInput placeholder="Minute...">
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <button mat-raised-button type="submit" (click)="create()" class="btn block mt-4 float-right btn-danger pull-right">Créer</button>
+                            <div class="clearfix"></div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

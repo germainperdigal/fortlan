@@ -1,0 +1,66 @@
+<div class="main-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header row card-header-danger">
+                        <div class="col-12">
+                            <h4 class="card-title ">Les parties programmées</h4>
+                            <button type="button" routerLink="/history" class="btn btn-success btn-sm btn-primary float-right">Créer une partie</button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table *ngIf="matches" class="table">
+                                <thead class=" text-primary">
+                                    <th>
+                                        ID
+                                    </th>
+                                    <th>
+                                        Libellé
+                                    </th>
+                                    <th>
+                                        Date
+                                    </th>
+                                    <th>
+                                        Places restantes
+                                    </th>
+                                    <th>
+                                        Actions
+                                    </th>
+                                </thead>
+                                <tbody>
+                                    <ng-container *ngFor="let match of (matches | psnfilter: searchText); let i = index">
+                                        <tr>
+                                            <td>
+                                                {{ i+1 }}
+                                            </td>
+                                            <td style="max-width: 10vw;">
+                                                {{ match.label }}
+                                            </td>
+                                            <td>
+                                                {{match.game | date }}
+                                            </td>
+                                            <td>
+                                                <p *ngIf="!match.team1 && !match.team2">Aucun inscrit</p>
+                                                <p *ngIf="match.team1 && !match.team2">1 place restante</p>
+                                                <p *ngIf="match.team1 && match.team2">Complet</p>
+                                            </td>
+                                            <td>
+
+                                                <ng-container>
+                                                    <button type="button" disabled *ngIf="!match.team1 || !match.team2 || match.winner" routerLink="/match/{{match._id }}" class="btn btn-danger">Gérer</button>
+                                                    <button type="button" *ngIf="match.team1 && match.team2 && !match.winner" routerLink="/match/{{match._id }}" class="btn btn-danger">Gérer</button>
+                                                </ng-container>
+                                            </td>
+                                        </tr>
+                                    </ng-container>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

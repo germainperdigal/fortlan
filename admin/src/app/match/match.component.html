@@ -1,0 +1,37 @@
+<div class="main-content">
+    <div class="container-fluid">
+        <div class="row underline">
+            <a style="cursor: pointer; text-decoration: underline;" routerLink="/games">
+                < Retourner à la liste</a>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header row card-header-danger">
+                        <div class="col-12">
+                            <h4 class="card-title" *ngIf="match">{{ match.label }} du {{ match.game | date }}</h4>
+                            <p class="card-category">Gestion du match</p>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <h2 class="text-center">Définir un gagnant</h2>
+                            <mat-form-field *ngIf="match.team1 && match.team2">
+                                <mat-label>Équipe gagnante</mat-label>
+                                <mat-select [(ngModel)]="winner" name="winner">
+                                    <mat-option [value]="match.team1._id">
+                                        {{match.team1.label}}
+                                    </mat-option>
+                                    <mat-option [value]="match.team2._id">
+                                        {{match.team2.label}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                            <button type="button" (click)="setWinner()" class="btn btn-danger float-right btn-sm">Valider</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
