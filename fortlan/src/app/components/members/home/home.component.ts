@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../../../services/api.service';
 import { NotificationsService } from '../../../services/notifications.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -9,11 +10,12 @@ import { NotificationsService } from '../../../services/notifications.service';
 })
 export class HomeComponent implements OnInit {
 
-  constructor(private api: ApiService, private notify: NotificationsService) { }
+  constructor(private api: ApiService, private notify: NotificationsService, private router: Router) { }
 
   games;
   user;
   winners = [];
+  
   ngOnInit(): void {
     this.loadWeekGames();
     if(!this.user) {
@@ -39,7 +41,10 @@ export class HomeComponent implements OnInit {
   }
 
   fetchUserDetails() {
-    this.api.fetchUserDetails().then(user => {
+    this.api.fetchUserDetails().then((user:any) => {
+      if(!user.team) {
+        this.router.navigateByUrl('/membre/equipe');
+      }
       this.user = user;
     });
   }

@@ -16,7 +16,49 @@ export class NavComponent implements OnInit {
   constructor(public ngxSmartModalService: NgxSmartModalService, private api: ApiService, private notify: NotificationsService, public authGuard: AuthGuardService) { }
 
   ngOnInit(): void {
+    this.navCheck();
   }
+
+  navCheck() {
+    var navMenuDiv = document.getElementById("nav-content");
+    var navMenu = document.getElementById("nav-toggle");
+    var a = document.getElementsByTagName("a");
+
+    document.onclick = check;
+    navMenuDiv.onclick = hideMenu;
+    function check(e) {
+      var target = (e && e.target) || (event && event.srcElement);
+
+      //Nav Menu
+      if (!checkParent(target, navMenuDiv)) {
+        // click NOT on the menu
+        if (checkParent(target, navMenu)) {
+          // click on the link
+          if (navMenuDiv.classList.contains("hidden")) {
+            navMenuDiv.classList.remove("hidden");
+          } else { navMenuDiv.classList.add("hidden"); }
+        } else {
+          // click both outside link and outside menu, hide menu
+          navMenuDiv.classList.add("hidden");
+        }
+      }
+
+    }
+
+    function hideMenu() {
+      navMenuDiv.classList.add("hidden");
+      window.scrollTo(0,0);
+    }
+
+    function checkParent(t, elm) {
+      while (t.parentNode) {
+        if (t == elm) { return true; }
+        t = t.parentNode;
+      }
+      return false;
+    }
+  }
+
 
   login() {
     if (this.email && this.password) {

@@ -154,6 +154,23 @@ export class ApiService {
     });
   }
 
+  joinTeam(team) {
+    let headers = new HttpHeaders({
+      'Content-Type': "application/json",
+      'Authorization': localStorage.getItem("token")
+    });
+    let options = { headers: headers }
+    var postData = { 'team': team };
+    return new Promise((resolve) => {
+      this.httpClient.patch(this.apiBaseUrl + "team/join", postData, options).subscribe(data => {
+        resolve(data);
+        this.router.navigateByUrl('/membre/accueil');
+      }, err => {
+        this.toastr.error("Impossible de vous faire rejoindre l'équipe...")
+      });
+    });
+  }
+
   createTeam(label) {
     let headers = new HttpHeaders({
       'Content-Type': "application/json",

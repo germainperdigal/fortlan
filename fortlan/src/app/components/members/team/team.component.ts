@@ -12,6 +12,7 @@ export class TeamComponent implements OnInit {
   teams;
   createTeam : boolean = false;
   newteam;
+  team;
 
   constructor(private api: ApiService, private notify: NotificationsService) { }
 
@@ -24,6 +25,15 @@ export class TeamComponent implements OnInit {
       this.teams = teams.team;
     })
   };
+
+  joinTeam() {
+    if(this.team) {
+      this.api.joinTeam(this.team);
+      console.log(this.team);
+    } else {
+      this.notify.flashError("Merci de bien choisir une équipe..");
+    }
+  }
 
   switch() {
     this.createTeam = !this.createTeam;

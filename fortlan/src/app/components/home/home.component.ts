@@ -22,29 +22,25 @@ export class HomeComponent implements OnInit {
   constructor(private api: ApiService, private notify: NotificationsService) { }
 
   ngOnInit(): void {
-    this.getWinners();
   }
 
   login() {
-    if(this.email && this.fname && this.password && this.pseudo) {
+    if(this.email && this.fname && this.password && this.pseudo && this.pseudo) {
       if(this.password === this.repassword) {
-        this.api.register(this.fname, this.lname, this.email, this.password, this.pseudo);
+        this.api.register(this.fname, this.lname, this.email, this.password, this.pseudo).then(nUser => {
+          this.notify.flashSuccess("Bienvenue, votre compte a bien été créé !");
+          this.email = "";
+          this.fname = "";
+          this.password = "";
+          this.pseudo = "";
+          this.repassword = "";
+        });
       } else {
         this.notify.flashError("Les mots de passe ne correspondent pas..");
       }
     } else {
       this.notify.flashError("Merci de remplir tous les champs !");
     }
-  }
-
-  getWinners() {
-    this.api.lastWeekWinners().then((matches:any) => {
-      matches.forEach(match => {
-        if(match.played) {
-          this.winners.push(match);
-        }
-      });
-    })
   }
 
 }
