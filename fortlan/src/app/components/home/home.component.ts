@@ -17,10 +17,12 @@ export class HomeComponent implements OnInit {
   pseudo;
   password;
   repassword;
+  winners = [];
 
   constructor(private api: ApiService, private notify: NotificationsService) { }
 
   ngOnInit(): void {
+    this.getWinners();
   }
 
   login() {
@@ -33,6 +35,16 @@ export class HomeComponent implements OnInit {
     } else {
       this.notify.flashError("Merci de remplir tous les champs !");
     }
+  }
+
+  getWinners() {
+    this.api.lastWeekWinners().then((matches:any) => {
+      matches.forEach(match => {
+        if(match.played) {
+          this.winners.push(match);
+        }
+      });
+    })
   }
 
 }

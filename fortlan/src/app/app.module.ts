@@ -11,10 +11,17 @@ import { NavComponent } from './components/includes/nav/nav.component';
 import { NgxSmartModalModule } from 'ngx-smart-modal';
 import { HomeComponent as MembersHomeComponent } from './components/members/home/home.component';
 
+import { LOCALE_ID } from '@angular/core';
+import localeFr from '@angular/common/locales/fr';
+import { registerLocaleData } from '@angular/common';
+
 import { HttpClient, HttpHandler, HttpClientModule } from '@angular/common/http';
 import { ToastrModule } from 'ngx-toastr';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { JwtHelperService, JwtModule } from '@auth0/angular-jwt';
+import { TeamComponent } from './components/members/team/team.component';
+
+registerLocaleData(localeFr);
 
 @NgModule({
   declarations: [
@@ -23,7 +30,8 @@ import { JwtHelperService, JwtModule } from '@auth0/angular-jwt';
     FooterComponent,
     HeaderComponent,
     MembersHomeComponent,
-    NavComponent
+    NavComponent,
+    TeamComponent
   ],
   imports: [
     BrowserModule,
@@ -39,7 +47,9 @@ import { JwtHelperService, JwtModule } from '@auth0/angular-jwt';
       }
     })
   ],
-  providers: [],
+  providers: [
+    { provide: LOCALE_ID, useValue: "fr-FR" }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

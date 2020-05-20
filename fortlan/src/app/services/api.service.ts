@@ -8,8 +8,7 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class ApiService {
 
-  apiBaseUrl: string = "http://localhost:6544/";
-  //apiBaseUrl: string = "https://fifbet.com:9865/";
+  apiBaseUrl: string = "https://fifbet.com:1122/";
   token: string = "Bearer ";
 
   constructor(private httpClient: HttpClient, private router: Router, private toastr: ToastrService) { }
@@ -36,6 +35,12 @@ export class ApiService {
     });
   }
 
+  logout() {
+    localStorage.setItem('token', null);
+    this.router.navigateByUrl('/');
+    this.toastr.success("A bientot !");
+  }
+
   register(fname: string, lname: string, email: string, password: string, pseudo: string) {
     let headers = new HttpHeaders({
       'Content-Type': "application/json"
@@ -48,11 +53,11 @@ export class ApiService {
       }, err => {
         if (err["error"].message != undefined && err["error"].message != "" && err["error"].message != null) {
           if (err.status == 500)
-            this.toastr.error("Oops..", "Impossible de vous inscrire, merci de réssayer plus tard !");
+            this.toastr.error("Impossible de vous inscrire, merci de réssayer plus tard !");
           else
-            this.toastr.error("Oops..", err["error"].message);
+            this.toastr.error(err["error"].message);
         } else {
-          this.toastr.error("Oops..", "Impossible de vous inscrire, merci de réssayer plus tard !");
+          this.toastr.error("Impossible de vous inscrire, merci de réssayer plus tard !");
         }
       });
     });
@@ -60,20 +65,110 @@ export class ApiService {
 
   fetchWeekGames() {
     let headers = new HttpHeaders({
-      'Content-Type': "application/json"
+      'Content-Type': "application/json",
+      'Authorization': localStorage.getItem("token")
     });
     let options = { headers: headers }
     return new Promise((resolve) => {
       this.httpClient.get(this.apiBaseUrl + "match/week", options).subscribe(data => {
         resolve(data);
       }, err => {
-          this.toastr.error("Oops..", "Impossible de charger les matchs de la semaine !");
-        });
+        this.toastr.error("Impossible de charger les matchs de la semaine !");
+      });
+    });
+  }
+
+  fetchUserDetails() {
+    let headers = new HttpHeaders({
+      'Content-Type': "application/json",
+      'Authorization': localStorage.getItem("token")
+    });
+    let options = { headers: headers }
+    return new Promise((resolve) => {
+      this.httpClient.get(this.apiBaseUrl + "user/me", options).subscribe(data => {
+        resolve(data);
+      }, err => {
+        this.toastr.error("Impossible de charger vos informations !");
+      });
+    });
+  }
+
+  fetchTeams() {
+    let headers = new HttpHeaders({
+      'Content-Type': "application/json",
+      'Authorization': localStorage.getItem("token")
+    });
+    let options = { headers: headers }
+    return new Promise((resolve) => {
+      this.httpClient.get(this.apiBaseUrl + "team", options).subscribe(data => {
+        resolve(data);
+      }, err => {
+        this.toastr.error("Impossible de charger les différentes équipes !");
+      });
+    });
+  }
+
+  checkMatch(id) {
+    let headers = new HttpHeaders({
+      'Content-Type': "application/json",
+      'Authorization': localStorage.getItem("token")
+    });
+    let options = { headers: headers }
+    return new Promise((resolve) => {
+      this.httpClient.get(this.apiBaseUrl + "match/check/" + id, options).subscribe(data => {
+        resolve(data);
+      }, err => {
+        this.toastr.error("Impossible de charger les différentes équipes !");
+      });
     });
   }
 
   joinGame(id) {
+    let headers = new HttpHeaders({
+      'Content-Type': "application/json",
+      'Authorization': localStorage.getItem("token")
+    });
+    let options = { headers: headers }
+    return new Promise((resolve) => {
+      this.httpClient.patch(this.apiBaseUrl + "match/" + id, {}, options).subscribe(data => {
+        resolve(data);
+      }, err => {
+        this.toastr.error("Une erreur est survenue lors de votre inscription");
+      });
+    });
+  }
 
+
+  lastWeekWinners() {
+    let headers = new HttpHeaders({
+      'Content-Type': "application/json",
+      'Authorization': localStorage.getItem("token")
+    });
+    let options = { headers: headers }
+    return new Promise((resolve) => {
+      this.httpClient.get(this.apiBaseUrl + "match/winners/lastweek", options).subscribe(data => {
+        resolve(data);
+      }, err => {
+        this.toastr.error("Une erreur est survenue lors du chargement des gagnants");
+      });
+    });
+  }
+
+  createTeam(label) {
+    let headers = new HttpHeaders({
+      'Content-Type': "application/json",
+      'Authorization': localStorage.getItem("token")
+    });
+    let options = { headers: headers }
+    var postData = { 'label': label };
+    return new Promise((resolve) => {
+      this.httpClient.post(this.apiBaseUrl + "team", postData, options).subscribe(data => {
+        resolve(data);
+        this.router.navigateByUrl('/membre/accueil');
+      }, err => {
+        this.toastr.error("Impossible de créer l'équipe...")
+      });
+    });
   }
 
 }
